@@ -1,5 +1,6 @@
 const API_URL = "https://vvri.pythonanywhere.com/api";
-async function showCourses() {
+//Kurzusokat listáz ki
+async function listCourses() {
     const response = await fetch(`${API_URL}/courses`);
     const courses = await response.json();
     const content = document.getElementById('content');
@@ -9,7 +10,7 @@ async function showCourses() {
         <ul>
             ${courses.map(course => `
                 <li>
-                    ${course.name} - ${course.description}
+                    ${course.name}
                     <button onclick="editCourse(${course.id})">Edit</button>
                     <button onclick="deleteCourse(${course.id})">Delete</button>
                 </li>
@@ -18,7 +19,7 @@ async function showCourses() {
     `;
 }
 
-async function showStudents() {
+async function listStudents() {
     const response = await fetch(`${API_URL}/students`);
     const students = await response.json();
     const content = document.getElementById('content');
@@ -28,7 +29,7 @@ async function showStudents() {
         <ul>
             ${students.map(student => `
                 <li>
-                    ${student.name} - ${student.email}
+                    ${student.name}
                     <button onclick="editStudent(${student.id})">Edit</button>
                     <button onclick="deleteStudent(${student.id})">Delete</button>
                 </li>
@@ -39,60 +40,61 @@ async function showStudents() {
 
 function createCourse() {
     const name = prompt("Enter course name:");
-    const description = prompt("Enter course description:");
     fetch(`${API_URL}/courses`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, description })
-    }).then(showCourses);
+        body: JSON.stringify({name})
+    }).then(listCourses);
 }
 
 function editCourse(id) {
     const name = prompt("Enter new course name:");
-    const description = prompt("Enter new course description:");
     fetch(`${API_URL}/courses/${id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, description })
-    }).then(showCourses);
+        body: JSON.stringify({name})
+    }).then(listCourses);
 }
 
 function deleteCourse(id) {
     fetch(`${API_URL}/courses/${id}`, {
         method: 'DELETE'
-    }).then(showCourses);
+    }).then(listCourses);
 }
 
 function createStudent() {
     const name = prompt("Enter student name:");
-    const email = prompt("Enter student email:");
+    const course_id = prompt("Enter student's course id:");
     fetch(`${API_URL}/students`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, email })
-    }).then(showStudents);
+        body: JSON.stringify({ name, course_id})
+    }).then(listStudents);
 }
 
 function editStudent(id) {
     const name = prompt("Enter new student name:");
-    const email = prompt("Enter new student email:");
+    const course_id = prompt("Enter new course id:");
     fetch(`${API_URL}/students/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, email })
-    }).then(showStudents);
+        body: JSON.stringify({ name, course_id })
+    }).then(listStudents);
 }
 
 function deleteStudent(id) {
     fetch(`${API_URL}/students/${id}`, {
         method: 'DELETE'
-    }).then(showStudents);
+    }).then(listStudents);
+}
+function escape() {
+    window.location.href = "https://index.html";
 }
