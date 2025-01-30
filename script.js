@@ -7,12 +7,14 @@ async function listCourses() {
     content.innerHTML = `
         <h2>Courses</h2>
         <button onclick="createCourse()">Add Course</button>
+        <button onclick="clearList()">Back</button>
         <ul>
             ${courses.map(course => `
                 <li>
                     ${course.name}
                     <button onclick="editCourse(${course.id})">Edit</button>
                     <button onclick="deleteCourse(${course.id})">Delete</button>
+                    
                 </li>
             `).join('')}
         </ul>
@@ -26,6 +28,7 @@ async function listStudents() {
     content.innerHTML = `
         <h2>Students</h2>
         <button onclick="createStudent()">Add Student</button>
+        <button onclick="clearList()">Back</button>
         <ul>
             ${students.map(student => `
                 <li>
@@ -95,6 +98,6 @@ function deleteStudent(id) {
         method: 'DELETE'
     }).then(listStudents);
 }
-function escape() {
-    window.location.href = "https://index.html";
+function clearList() {
+    window.location.reload();
 }
